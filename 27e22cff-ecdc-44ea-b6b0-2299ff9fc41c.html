@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zion JCRSK Sermon Archive</title>
+    <base target="_self">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@preline/preline@2.0.0/dist/preline.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .sermon-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .sermon-card {
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white dark:bg-gray-800 shadow-sm">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-church text-3xl text-primary-600 dark:text-primary-400"></i>
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">
+                        <span class="text-primary-600 dark:text-primary-400">Zion</span> JCRSK Sermons
+                    </h1>
+                </div>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#" class="text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 font-medium" onclick="navigate(event, 'home')">Home</a>
+                    <a href="#" class="text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 font-medium" onclick="navigate(event, 'archive')">Archive</a>
+                    <a href="#" class="text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 font-medium" onclick="navigate(event, 'about')">About</a>
+                    <a href="#" class="text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 font-medium" onclick="navigate(event, 'contact')">Contact</a>
+                </nav>
+                <div class="flex items-center space-x-4">
+                    <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700">
+                        <i class="fas fa-moon dark:hidden text-gray-700"></i>
+                        <i class="fas fa-sun hidden dark:block text-yellow-300"></i>
+                    </button>
+                    <button class="md:hidden p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700" onclick="toggleMobileMenu()">
+                        <i class="fas fa-bars text-gray-700 dark:text-gray-300"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4">
+                <a href="#" class="block py-2 text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400" onclick="navigate(event, 'home')">Home</a>
+                <a href="#" class="block py-2 text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400" onclick="navigate(event, 'archive')">Archive</a>
+                <a href="#" class="block py-2 text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400" onclick="navigate(event, 'about')">About</a>
+                <a href="#" class="block py-2 text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400" onclick="navigate(event, 'contact')">Contact</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Hero Section -->
+        <section id="home" class="fade-in mb-12">
+            <div class="bg-gradient-to-r from-primary-500 to-primary-700 rounded-xl p-8 md:p-12 text-white">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Welcome to Zion JCRSK Sermon Archive</h2>
+                <p class="text-lg md:text-xl mb-6">A collection of spiritual teachings and messages from our ministry</p>
+                <button class="bg-white text-primary-700 hover:bg-gray-100 font-medium px-6 py-3 rounded-lg transition-all" onclick="navigate(event, 'archive')">
+                    Browse Sermons <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Latest Sermons -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Latest Sermons</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Sermon cards will be generated here -->
+            </div>
+        </section>
+
+        <!-- Archive Section -->
+        <section id="archive" class="hidden fade-in mb-12">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Sermon Archive</h2>
+                <div class="relative">
+                    <select id="year-filter" class="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-2 pr-8 text-gray-900 dark:text-white focus:ring-primary-500 focus:border-primary-500">
+                        <option value="all">All Years</option>
+                        <!-- Year options will be generated here -->
+                    </select>
+                </div>
+            </div>
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden">
+                <div class="divide-y divide-gray-200 dark:divide-gray-700">
+                    <!-- Archive items will be generated here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="hidden fade-in mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">About Zion JCRSK</h2>
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+                <p class="text-gray-700 dark:text-gray-300 mb-4">
+                    Zion JCRSK is a ministry dedicated to spreading the word of God through powerful sermons and teachings. Our mission is to inspire, educate, and bring people closer to their faith.
+                </p>
+                <p class="text-gray-700 dark:text-gray-300">
+                    This archive serves as a collection of all our sermons, allowing members and visitors to revisit past messages and continue their spiritual journey.
+                </p>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="hidden fade-in mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Contact Us</h2>
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6">
+                <form class="space-y-4">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name</label>
+                        <input type="text" id="name" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-primary-500 focus:border-primary-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
+                        <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-primary-500 focus:border-primary-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
+                    </div>
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Message</label>
+                        <textarea id="message" rows="4" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-primary-500 focus:border-primary-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"></textarea>
+                    </div>
+                    <button type="submit" class="bg-primary-600 hover:bg-primary-700 text-white font-medium px-6 py-2 rounded-lg transition-all">
+                        Send Message <i class="fas fa-paper-plane ml-2"></i>
+                    </button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <div class="flex items-center space-x-2">
+                        <i class="fas fa-church text-xl text-primary-600 dark:text-primary-400"></i>
+                        <span class="text-lg font-semibold text-gray-900 dark:text-white">Zion JCRSK Sermons</span>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-400 mt-2">Documenting spiritual journeys since 2023</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                    <a href="#" class="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="border-t border-gray-200 dark:border-gray-700 mt-8 pt-8 text-center text-gray-500 dark:text-gray-400 text-sm">
+                <p>© 2023 Zion JCRSK Sermon Archive. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sample sermon data
+        const sermons = [
+            {
+                id: 1,
+                title: "The Power of Faith",
+                date: "2023-10-15",
+                scripture: "Hebrews 11:1",
+                summary: "Exploring the fundamental nature of faith and its transformative power in our lives.",
+                image: "https://images.unsplash.com/photo-1509057398-6d59e1881297?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 2,
+                title: "Walking in Love",
+                date: "2023-10-08",
+                scripture: "1 Corinthians 13:4-7",
+                summary: "Understanding the true meaning of love as described in Corinthians and how to apply it daily.",
+                image: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 3,
+                title: "The Joy of Giving",
+                date: "2023-10-01",
+                scripture: "2 Corinthians 9:7",
+                summary: "Discovering the spiritual blessings that come from a cheerful and generous heart.",
+                image: "https://images.unsplash.com/photo-1600431521340-491eca880813?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 4,
+                title: "Overcoming Fear",
+                date: "2023-09-24",
+                scripture: "2 Timothy 1:7",
+                summary: "Learning to replace fear with faith through God's perfect love and power.",
+                image: "https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 5,
+                title: "The Peace of God",
+                date: "2023-09-17",
+                scripture: "Philippians 4:6-7",
+                summary: "Understanding how to experience God's peace that surpasses all understanding.",
+                image: "https://images.unsplash.com/photo-1502085671122-2d7a0bca82e6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 6,
+                title: "Living with Purpose",
+                date: "2023-09-10",
+                scripture: "Jeremiah 29:11",
+                summary: "Discovering God's unique plan and purpose for your life.",
+                image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
+            }
+        ];
+
+        // DOM elements
+        const latestSermonsContainer = document.querySelector('.grid');
+        const archiveContainer = document.querySelector('.divide-y');
+        const yearFilter = document.getElementById('year-filter');
+
+        // Generate latest sermon cards
+        function generateLatestSermons() {
+            latestSermonsContainer.innerHTML = sermons.slice(0, 3).map(sermon => `
+                <div class="sermon-card bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden">
+                    <img src="${sermon.image}" alt="${sermon.title}" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">${sermon.title}</h3>
+                            <span class="text-sm text-gray-500 dark:text-gray-400">${formatDate(sermon.date)}</span>
+                        </div>
+                        <p class="text-sm text-gray-600 dark:text-gray-300 mb-3">${sermon.scripture}</p>
+                        <p class="text-gray-700 dark:text-gray-300 text-sm mb-4">${sermon.summary}</p>
+                        <button class="text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 text-sm font-medium" onclick="viewSermon(${sermon.id})">
+                            Read More <i class="fas fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Generate archive items
+        function generateArchive() {
+            // Get unique years from sermons
+            const years = [...new Set(sermons.map(sermon => sermon.date.split('-')[0]))].sort((a, b) => b - a);
+            
+            // Populate year filter
+            yearFilter.innerHTML = '<option value="all">All Years</option>' + 
+                years.map(year => `<option value="${year}">${year}</option>`).join('');
+            
+            // Generate archive items
+            archiveContainer.innerHTML = sermons.map(sermon => `
+                <div class="p-6 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors" data-year="${sermon.date.split('-')[0]}">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                        <div class="mb-4 md:mb-0">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">${sermon.title}</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-300">${sermon.scripture}</p>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <span class="text-sm text-gray-500 dark:text-gray-400">${formatDate(sermon.date)}</span>
+                            <button class="text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 text-sm font-medium" onclick="viewSermon(${sermon.id})">
+                                View <i class="fas fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Format date as Month Day, Year
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString('en-US', options);
+        }
+
+        // View sermon details
+        function viewSermon(id) {
+            const sermon = sermons.find(s => s.id === id);
+            alert(`Viewing sermon: ${sermon.title}\nDate: ${formatDate(sermon.date)}\nScripture: ${sermon.scripture}\n\n${sermon.summary}`);
+        }
+
+        // Navigation function
+        function navigate(event, sectionId) {
+            event.preventDefault();
+            document.querySelectorAll('section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            document.getElementById(sectionId).classList.remove('hidden');
+            document.getElementById(sectionId).classList.add('fade-in');
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Toggle mobile menu
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Filter archive by year
+        yearFilter?.addEventListener('change', function() {
+            const selectedYear = this.value;
+            const items = archiveContainer.querySelectorAll('[data-year]');
+            
+            items.forEach(item => {
+                if (selectedYear === 'all' || item.dataset.year === selectedYear) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+
+        // Theme toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle?.addEventListener('click', function() {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('color-theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        });
+
+        // Check for saved theme preference
+        if (localStorage.getItem('color-theme') === 'dark' || (!localStorage.getItem('color-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            generateLatestSermons();
+            generateArchive();
+        });
+    </script>
+</body>
+</html>
